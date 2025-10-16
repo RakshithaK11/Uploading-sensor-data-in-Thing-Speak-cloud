@@ -1,4 +1,6 @@
 # Uploading temperature sensor data in Thing Speak cloud
+# NAME: RAKSHITHA K
+# REGISTER NUMBER:212223110039
 
 # AIM:
 To monitor the temperature sensor data in the Thing speak using an ESP32 controller.
@@ -71,10 +73,72 @@ Automatically act on your data and communicate using third-party services like T
 
 
 # PROGRAM:
+~~~
+#include "ThingSpeak.h"
+#include <WiFi.h>
+#include "DHT.h"
 
+char ssid[] = "Vinuthaa";
+char pass[] = "iwillnotsay";
+
+const int out = 2;
+long T;
+float temperature = 0;
+WiFiClient client;
+DHT dht(out, DHT11);
+
+unsigned long myChannelField =  3108847;
+const int TemperatureField = 1;
+const int HumidityField = 2; 
+const char* myWriteAPIKey = "EO0EK0I4E0LMIPDM";
+
+void setup() {
+  Serial.begin(115200);
+  ThingSpeak.begin(client);
+  WiFi.mode(WIFI_STA);
+  dht.begin();
+  pinMode(out, INPUT);
+  // put your setup code here, to run once:
+
+}
+
+void loop() 
+{
+  if (WiFi.status() != WL_CONNECTED)
+  {
+    Serial.print("Attempting to conenct to SSID: ");
+    Serial.println(ssid);
+    while (WiFi.status() != WL_CONNECTED)
+    {
+      WiFi.begin(ssid, pass);
+      Serial.print(".");
+      delay(5000);
+    }
+    Serial.println("\nConnected.");
+  }
+
+  float temperature = dht.readTemperature();
+  float humidity = dht.readHumidity();
+
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.println(" °C");
+
+  Serial.print("Humidity: ");
+  Serial.print(humidity);
+  Serial.println(" g.m-3");
+ ThingSpeak.setField(TemperatureField, temperature);
+ ThingSpeak.setField(HumidityField, humidity);
+    ThingSpeak.writeFields(myChannelField,myWriteAPIKey);
+  delay(1000);
+}
+~~~
 # CIRCUIT DIAGRAM:
+<img width="1711" height="767" alt="image" src="https://github.com/user-attachments/assets/bba84fea-5cbd-4852-a4d3-66af89c4c024" />
 
 # OUTPUT:
+<img width="1477" height="825" alt="image" src="https://github.com/user-attachments/assets/ce6b0009-66db-4637-9e9a-24ae353a4f4a" />
+<img width="1469" height="824" alt="image" src="https://github.com/user-attachments/assets/7c6d4449-0be9-4b65-aaf3-dbe1705fac6f" />
 
 # RESULT:
 
