@@ -1,4 +1,4 @@
-# EX NO 2 Uploading temperature sensor data in Thing Speak cloud
+# EX NO 3 Uploading temperature sensor data in Thing Speak cloud
 # NAME: RAKSHITHA K
 # REGISTER NUMBER:212223110039
 
